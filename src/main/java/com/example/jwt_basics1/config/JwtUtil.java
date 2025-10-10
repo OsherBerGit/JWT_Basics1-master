@@ -50,7 +50,7 @@ public class JwtUtil {
                 .add(claims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                .expiration(new Date(System.currentTimeMillis() + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME))
                 .and()
                 .claim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
@@ -59,6 +59,23 @@ public class JwtUtil {
                 .compact();
     }
 
+    // Generate a JWT token for a user, refresh token
+    public String generateRefreshToken(AuthenticationRequest authenticationRequest,
+                                UserDetails userDetails) {
+
+        Map<String, Object> claims = new HashMap<>();
+
+        return Jwts.builder()
+                .claims()
+                .add(claims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
+                .and()
+                .claim("issuedBy", "learning JWT with Spring Security")
+                .signWith(getKey())
+                .compact();
+    }
 
     // Extract the expiration date from a JWT token and implicitly validate the token
     // This implementation implicitly validates the signature when extracting claims:

@@ -45,7 +45,7 @@ Content-Type: {{contentType}}
 
 ### 2.1 Test Admin Access - PASTE ADMIN TOKEN BELOW - Authorization: Bearer PASTE_ADMIN_TOKEN_HERE
 GET {{baseUrl}}/api/protected-message-admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1ODIxNTgzMCwiZXhwIjoxNzU4MjE2MTMwLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.hc0PO2yhVkQuseDJ7a5cNWZtEmmq2GHnH8LQm8vIdko
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTA3MywiZXhwIjoxNzYwMTAxMTMzLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.g4R8hWdxMqHYhE7dPfUdaoiMUJ4s6wRZiyn09Zom71A
 
 Content-Type: {{contentType}}
 
@@ -213,7 +213,7 @@ Content-Type: {{contentType}}
 
 ### 7.2 Use Fresh Token Immediately
 GET {{baseUrl}}/api/protected-message
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MDUwOTk3NCwiZXhwIjoxNzUwNTEwMjc0LCJyb2xlcyI6WyJST0xFX0FETUlOIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.GCYNfkYgGCwWxL4RwZZKfZJOHKfPXwef9oD8GLpRYDU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTEzOSwiZXhwIjoxNzYwMTAxMTk5LCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.JCWeLopG55nDvm02etzC7JUypKPtWzUkUhCjjy9qkXE
 Content-Type: {{contentType}}
 
 ### REPLACE THE TOKEN ABOVE WITH YOUR FRESH TOKEN
@@ -283,3 +283,10 @@ Content-Type: {{contentType}}
 ### 2. Copy accessToken from response
 ### 3. GET /api/protected-message with "Authorization: Bearer <token>"
 ### 4. Should get 200 OK with welcome message
+
+POST http://localhost:8080/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTEzOSwiZXhwIjoxNzYwMTAxMjU5LCJpc3N1ZWRCeSI6ImxlYXJuaW5nIEpXVCB3aXRoIFNwcmluZyBTZWN1cml0eSJ9.LEIk2c1UY-LKFhpfIRo1yoxKJtAG4rIFUgC5GyIb6pg"
+}

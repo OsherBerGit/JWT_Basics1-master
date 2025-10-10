@@ -27,11 +27,12 @@ public class AuthenticationService {
             throw new AuthenticationServiceException("Invalid credentials");
         }
 
-        // generate the JWT token
-        String jwtToken = jwtUtil.generateToken(authenticationRequest, userDetails);
+        // generate the JWT access token and refresh token
+        String accessToken = jwtUtil.generateToken(authenticationRequest, userDetails);
+        String refreshToken = jwtUtil.generateRefreshToken(authenticationRequest, userDetails);
 
         // return the AuthenticationResponse object
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(accessToken, refreshToken);
     }
 }
 
