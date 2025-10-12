@@ -45,7 +45,7 @@ Content-Type: {{contentType}}
 
 ### 2.1 Test Admin Access - PASTE ADMIN TOKEN BELOW - Authorization: Bearer PASTE_ADMIN_TOKEN_HERE
 GET {{baseUrl}}/api/protected-message-admin
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTA3MywiZXhwIjoxNzYwMTAxMTMzLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.g4R8hWdxMqHYhE7dPfUdaoiMUJ4s6wRZiyn09Zom71A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDI2ODMwMSwiZXhwIjoxNzYwMjY4NjAxLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzc3VlZEJ5IjoibGVhcm5pbmcgSldUIHdpdGggU3ByaW5nIFNlY3VyaXR5In0.l3G6ukljvFHQjOBsxEKH7sN8lbsjI1IrVFOoA4dola8
 
 Content-Type: {{contentType}}
 
@@ -284,9 +284,10 @@ Content-Type: {{contentType}}
 ### 3. GET /api/protected-message with "Authorization: Bearer <token>"
 ### 4. Should get 200 OK with welcome message
 
-POST http://localhost:8080/refresh-token
+### added the "/api" path ↓
+POST http://localhost:8080/api/refresh-token
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTEzOSwiZXhwIjoxNzYwMTAxMjU5LCJpc3N1ZWRCeSI6ImxlYXJuaW5nIEpXVCB3aXRoIFNwcmluZyBTZWN1cml0eSJ9.LEIk2c1UY-LKFhpfIRo1yoxKJtAG4rIFUgC5GyIb6pg"
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2MDI2ODMwMSwiZXhwIjoxNzYwODczMTAxLCJpc3N1ZWRCeSI6ImxlYXJuaW5nIEpXVCB3aXRoIFNwcmluZyBTZWN1cml0eSJ9.sJPjA8uxjupnXG96FAb1yuZUoHq3K-6fH4xEOKaPuiw"
 }

@@ -11,8 +11,15 @@ import org.springframework.stereotype.Service;
 public class RefreshTokenService {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtil jwtUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public AuthenticationResponse refreshAccessToken(String refreshToken) {
+
+        // check if the refresh token is blacklisted
+//        if (tokenBlacklistService.isTokenBlacklisted(refreshToken)) { // fix it to check the **ACCESS** token is blacklisted
+//            throw new RuntimeException("Refresh token is blacklisted");
+//        }
+
         // load the user details from the refresh token
         String username = jwtUtil.extractUsername(refreshToken);
 

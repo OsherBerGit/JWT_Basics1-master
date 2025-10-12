@@ -8,7 +8,7 @@ public class JwtProperties {
 
     public static final int ACCESS_TOKEN_EXPIRATION_TIME = 5 * 60 * 1000; // 300_000
 
-    public static final int REFRESH_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000; // 300_000
+    public static final int REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000; // 300_000
 
     // The TOKEN_PREFIX constant is used to prefix the JWT in the Authorization header
     public static final String TOKEN_PREFIX = "Bearer ";
