@@ -6,6 +6,7 @@ import com.example.jwt_basics1.dto.AuthenticationResponse;
 import com.example.jwt_basics1.dto.RefreshTokenRequest;
 import com.example.jwt_basics1.service.AuthenticationService;
 import com.example.jwt_basics1.service.RefreshTokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,9 @@ public class AuthenticationController {
     // The authenticateUser() method takes in an AuthenticationRequest object, which contains the username and password.
     // The method returns an AuthenticationResponse object, which contains the JWT and refresh token, and the user's roles.
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
         try {
-            AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
+            AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest, request);
             return ResponseEntity.ok(authResponse);
         } catch (AuthenticationServiceException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -36,10 +37,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletRequest request) {
         try {
             AuthenticationResponse authResponse =
-                    refreshTokenService.refreshAccessToken(refreshTokenRequest.getRefreshToken());
+                    refreshTokenService.refreshAccessToken(refreshTokenRequest.getRefreshToken(), request);
             return ResponseEntity.ok(authResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

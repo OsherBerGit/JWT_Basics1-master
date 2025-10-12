@@ -3,6 +3,7 @@ package com.example.jwt_basics1.service;
 import com.example.jwt_basics1.config.JwtUtil;
 import com.example.jwt_basics1.dto.AuthenticationRequest;
 import com.example.jwt_basics1.dto.AuthenticationResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,7 @@ public class AuthenticationService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest, HttpServletRequest request) {
         // load the user details from the database using the username by calling the loadUserByUsername() method
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 

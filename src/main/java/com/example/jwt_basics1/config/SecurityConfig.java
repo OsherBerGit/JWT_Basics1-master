@@ -1,6 +1,8 @@
 package com.example.jwt_basics1.config;
 
+import com.example.jwt_basics1.service.CustomLogoutHandler;
 import com.example.jwt_basics1.service.CustomUserDetailsService;
+import com.example.jwt_basics1.service.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,8 @@ public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+    private final TokenBlacklistService tokenBlacklistService;
+    private final CustomLogoutHandler customLogoutHandler;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -49,12 +53,20 @@ public class SecurityConfig {
 
 
                 // adding a custom JWT authentication filter
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService),
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService, tokenBlacklistService),
                         UsernamePasswordAuthenticationFilter.class)
 
                 // The SessionCreationPolicy.STATELESS setting means that the application will not create or use HTTP sessions.
                 // This is a common configuration in RESTful APIs, especially when using token-based authentication like JWT (JSON Web Token).
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // הוספת מנגנון ה-Logout
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler(customLogoutHandler) // מחלקת לוגאוט מותאמת אישית
+                        .invalidateHttpSession(true) // איבוד תקפות של הסשן
+                        .clearAuthentication(true)
+                        .permitAll())
 
                 // Configuring authorization for HTTP requests
                 .authorizeHttpRequests(auth -> auth
@@ -68,5 +80,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
