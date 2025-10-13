@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+        if (tokenBlacklistService.isTokenBlacklisted(jwtUtil.extractJWTID(token))) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token is blacklisted");
             return;
@@ -105,7 +105,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // pass the request along the filter chain
         filterChain.doFilter(request, response);
-
-
     }
 }

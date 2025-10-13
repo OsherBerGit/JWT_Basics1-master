@@ -41,7 +41,7 @@ public class JwtUtil {
 
     // Generate a JWT token for a user, first time login
     public String generateToken(AuthenticationRequest authenticationRequest,
-                                UserDetails userDetails) {
+                                UserDetails userDetails, String jwtID) {
 
         Map<String, Object> claims = new HashMap<>();
 
@@ -49,6 +49,7 @@ public class JwtUtil {
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
+                .setId(jwtID)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME))
                 .and()
@@ -61,7 +62,7 @@ public class JwtUtil {
 
     // Generate a JWT token for a user, refresh token
     public String generateRefreshToken(AuthenticationRequest authenticationRequest,
-                                UserDetails userDetails) {
+                                UserDetails userDetails, String jwtID) {
 
         Map<String, Object> claims = new HashMap<>();
 
@@ -69,6 +70,7 @@ public class JwtUtil {
                 .claims()
                 .add(claims)
                 .subject(userDetails.getUsername())
+                .setId(jwtID)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
                 .and()
@@ -99,6 +101,9 @@ public class JwtUtil {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
+    // Extract the jwtID from a JWT token
+    public String extractJWTID(String token) { return extractClaim(token, Claims::getId); }
 
     private <T> T extractClaim(String string, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(string);

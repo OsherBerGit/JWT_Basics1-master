@@ -1,31 +1,34 @@
 package com.example.jwt_basics1.service;
 
+import com.example.jwt_basics1.config.JwtUtil;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenBlacklistService {
 
-    private final Map<String, Long> blacklistedTokens = new ConcurrentHashMap<>();
+    private final Map<String, Date> blacklistedTokens = new ConcurrentHashMap<>();
 
     // Enter a token to the blacklist
-    public void blacklistToken(String token, long expirationTime) {
-        blacklistedTokens.put(token, expirationTime);
+    public void blacklistToken(String jwtID, Date expirationTime) { // were token before id
+        blacklistedTokens.put(jwtID, expirationTime);
     }
 
     // Check if a token is in the blacklist
-    public boolean isTokenBlacklisted(String token) {
+    public boolean isTokenBlacklisted(String jwtID) {
         cleanupExpiredTokens();
-        return blacklistedTokens.containsKey(token);
+        return blacklistedTokens.containsKey(jwtID);
     }
 
     // Remove expired tokens from the blacklist
     public void cleanupExpiredTokens() {
-        long now = System.currentTimeMillis();
-        blacklistedTokens.entrySet().removeIf(entry -> entry.getValue() < now);
+        Date now = new Date();
+        blacklistedTokens.values().removeIf(date -> date.before(now));
     }
 
     @Scheduled(fixedRate = 300_000)

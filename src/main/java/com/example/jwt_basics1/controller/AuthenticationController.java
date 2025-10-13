@@ -27,9 +27,12 @@ public class AuthenticationController {
     // The authenticateUser() method takes in an AuthenticationRequest object, which contains the username and password.
     // The method returns an AuthenticationResponse object, which contains the JWT and refresh token, and the user's roles.
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
+    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest,
+                                              HttpServletRequest request) {
         try {
-            AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest, request);
+            String clientIP = request.getRemoteAddr();
+            authenticationRequest.setIp(clientIP);
+            AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             return ResponseEntity.ok(authResponse);
         } catch (AuthenticationServiceException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
@@ -37,10 +40,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletRequest request) {
+    public ResponseEntity<?> refreshAccessToken(@RequestBody RefreshTokenRequest refreshTokenRequest,
+                                                HttpServletRequest request) {
+        if (request == null || refreshTokenRequest.getRefreshToken() == null || refreshTokenRequest.getRefreshToken().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+
         try {
-            AuthenticationResponse authResponse =
-                    refreshTokenService.refreshAccessToken(refreshTokenRequest.getRefreshToken(), request);
+            String clientIP = request.getRemoteAddr();
+            refreshTokenRequest.setIp(clientIP);
+            AuthenticationResponse authResponse = refreshTokenService.refreshAccessToken(refreshTokenRequest);
             return ResponseEntity.ok(authResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
