@@ -10,7 +10,7 @@ const DataFetcher = () => {
     const fetchData = async () => {
       try {
         const accessToken = sessionStorage.getItem('accessToken');
-        const response = await fetch('https://your-server-api.com/protected-data', {
+        const response = await fetch('https://localhost:8080/protected-data', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,
