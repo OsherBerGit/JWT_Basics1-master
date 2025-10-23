@@ -70,12 +70,24 @@ public class SecurityConfig {
 
                 // Configuring authorization for HTTP requests
                 .authorizeHttpRequests(auth -> auth
+                        // Public endpoints
+                        .antMatchers("/login", "/register").permitAll()
+                
+                        // User endpoints - accessible by authenticated users
+                        .antMatchers(HttpMethod.GET, "/users/**").hasAnyRole("USER", "ADMIN")
+                
+                        // Admin-only endpoints
+                        .antMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+
                         .requestMatchers("api/login/**").permitAll()
                         .requestMatchers("api/refresh-token/**").permitAll() // Refresh token path
 
                         .requestMatchers("api/protected-message-admin").hasAnyRole("ADMIN")
                         .requestMatchers("api/protected-message").hasAnyRole("USER", "ADMIN")
 
+                        // All other requests must be authenticated
                         .anyRequest().authenticated());
 
         return http.build();
